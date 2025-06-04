@@ -1,0 +1,6 @@
+@squares_api_adform_HostAddress = http://localhost:5080
+
+GET {{squares_api_adform_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
