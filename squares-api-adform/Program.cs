@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using squares_api_adform.Data;
 
 namespace squares_api_adform
 {
@@ -7,10 +9,13 @@ namespace squares_api_adform
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Register DbContext
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseInMemoryDatabase("PointsDb"));
 
+
+            // Add services to the container.
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
@@ -22,10 +27,7 @@ namespace squares_api_adform
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
 
             app.Run();
