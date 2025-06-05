@@ -15,7 +15,10 @@ namespace squares_api_adform
 
             // Add services to the container.
             builder.Services.AddControllers();
-            builder.Services.AddOpenApi();
+
+            // Enable Swagger
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
@@ -23,6 +26,8 @@ namespace squares_api_adform
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
