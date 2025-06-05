@@ -53,7 +53,7 @@ namespace squares_api_adform.Controllers
         {
             _context.Points.AddRange(points);
             await _context.SaveChangesAsync();
-            return Ok(new { Count = points.Count });
+            return Ok(new { points.Count });
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace squares_api_adform.Models
 
 {
-    public class Point
+    public class Point : IEquatable<Point>
     {
         [Key]
         public int Id { get; set; }
@@ -13,5 +13,12 @@ namespace squares_api_adform.Models
 
         [Required]
         public int Y { get; set; }
+        public bool Equals(Point? other)
+        {
+            return other is not null && X == other.X && Y == other.Y;
+        }
+
+        public override bool Equals(object? obj) => Equals(obj as Point);
+        public override int GetHashCode() => HashCode.Combine(X, Y);
     }
 }
