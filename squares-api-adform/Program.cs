@@ -9,9 +9,9 @@ namespace squares_api_adform
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Register DbContext - we use inMemoryDb for now, later will switch to PostgreSQL
+            // Config PostgresDB
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("PointsDb"));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add services to the container.
             builder.Services.AddControllers();
