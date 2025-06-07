@@ -22,6 +22,7 @@ The **Squares API** allows users to manage a list of 2D points and identify all 
 - [Entity Framework Core (EF Core)](https://learn.microsoft.com/en-us/ef/core/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Swagger / Swashbuckle](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle)
+- [xUnit](https://xunit.net/) for unit testing
 
 ---
 
@@ -127,15 +128,18 @@ Test it using `POST /api/points/import`, then call `GET /api/squares`.
 
 ---
 
-## 🔍 Testing (Optional, Coming Soon)
+## 🔍 Testing
+
+Run the unit tests with:
 
 ```bash
 dotnet test
 ```
 
-Unit tests will cover:
-- Point management
-- Square detection logic
+Covered:
+- SquareService unit tests (xUnit)
+- Logic validation for multiple distinct squares
+- Edge cases (non-square inputs)
 
 ---
 
@@ -147,17 +151,18 @@ Planned: Dockerfile and docker-compose support for API and PostgreSQL
 
 ## 🧠 Design Decisions
 
-- Started with InMemory DB for fast testing
+- Started with InMemory DB for fast prototyping
 - Switched to PostgreSQL for real-world persistence
-- Square detection uses vector math to avoid reinventing geometry logic
-- Config driven by environment and separated from secrets
+- Square detection uses diagonal vector math to avoid redundant calculations
+- Hash-based deduplication avoids identifying the same square twice
+- Code separated into controllers/services for testability
 
 ---
 
 ## 📌 Notes
 
-- Max response time under 5 seconds
-- Built for scalability: EF Core, layered design
+- Max response time under 5 seconds even for 1000+ points
+- Built for scalability: EF Core, async API, layered design
 - Swagger auto-docs all REST endpoints
 
 ---
