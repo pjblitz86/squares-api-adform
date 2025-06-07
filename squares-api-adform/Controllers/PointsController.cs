@@ -49,11 +49,23 @@ namespace squares_api_adform.Controllers
 
         // POST: api/points/import
         [HttpPost("import")]
-        public async Task<IActionResult> ImportPoints([FromBody] List<Point> points)
+        public async Task<IActionResult> ImportPoints([FromBody] List<Point> newPoints)
         {
-            _context.Points.AddRange(points);
-            await _context.SaveChangesAsync();
-            return Ok(new { points.Count });
+            var existingPoints = await _context.Points
+                .Select(p => new { p.X, p.Y })
+                .ToListAsync();
+
+            var toInsert = newPoints
+                .Where(p => !existingPoints.Any(ep => ep.X == p.X && ep.Y == p.Y))
+                .ToList();
+
+            if (toInsert.Count > 0)
+            {
+                _context.Points.AddRange(toInsert);
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok(new { Inserted = toInsert.Count });
         }
     }
 }

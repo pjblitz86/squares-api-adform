@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace squares_api_adform.Models
 
 {
+    [Index(nameof(X), nameof(Y), IsUnique = true)]
     public class Point : IEquatable<Point>
     {
         [Key]
