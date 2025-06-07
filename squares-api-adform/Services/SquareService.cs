@@ -8,6 +8,7 @@ namespace squares_api_adform.Services
         {
             var pointSet = points.ToHashSet(); // for fast contains lookup
             var squares = new List<List<Point>>();
+            var seen = new HashSet<string>(); // For duplicate prevention
 
             // Loop through every unique pair of points. Each pair is treated as a diagonal of a possible square.
             for (int i = 0; i < points.Count; i++)
@@ -29,18 +30,29 @@ namespace squares_api_adform.Services
                     var p3 = new Point { X = (int)(midX - dy), Y = (int)(midY + dx) };
                     var p4 = new Point { X = (int)(midX + dy), Y = (int)(midY - dx) };
 
-                    // Only accept the square if all 4 points exist in the database
+                    // Only accept the square if all 4 points exist
                     if (pointSet.Contains(p3) && pointSet.Contains(p4))
                     {
-                        var square = new List<Point> { p1, p2, p3, p4 }
-                            .OrderBy(p => p.X).ThenBy(p => p.Y).ToList();
+                        // Prevent duplicates with hash logic (sorted by X then Y)
+                        var square = new[] { p1, p2, p3, p4 }
+                            .OrderBy(p => p.X)
+                            .ThenBy(p => p.Y)
+                            .Select(p => $"{p.X},{p.Y}");
 
-                        // Prevent duplicates by checking if this square already exists
-                        if (!squares.Any(s =>
-                            s.OrderBy(p => p.X).ThenBy(p => p.Y)
-                             .SequenceEqual(square)))
+                        string hash = string.Join(";", square);
+
+                        if (!seen.Contains(hash))
                         {
-                            squares.Add(square);
+                            seen.Add(hash);
+                            squares.Add(square.Select(s =>
+                            {
+                                var coords = s.Split(',');
+                                return new Point
+                                {
+                                    X = int.Parse(coords[0]),
+                                    Y = int.Parse(coords[1])
+                                };
+                            }).ToList());
                         }
                     }
                 }
