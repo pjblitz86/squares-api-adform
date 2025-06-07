@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using squares_api_adform.Data;
+using squares_api_adform.Services;
 
 namespace squares_api_adform
 {
@@ -15,6 +16,7 @@ namespace squares_api_adform
 
             // Add services to the container.
             builder.Services.AddControllers();
+            builder.Services.AddScoped<SquareService>();
 
             // Enable Swagger
             builder.Services.AddEndpointsApiExplorer();
