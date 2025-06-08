@@ -10,8 +10,8 @@ The **Squares API** allows users to manage a list of 2D points and identify all 
 - ✅ Identify all perfect squares from a list of points
 - ✅ RESTful API with Swagger documentation
 - ✅ PostgreSQL database with EF Core
-- ✅ Environment-specific config via `appsettings.Development.json`
-- ✅ Ready for production (unit testing, Docker, SLI ready)
+- ✅ Manual request timing log (SLI logging)
+- ✅ Unit tested with xUnit
 
 ---
 
@@ -51,9 +51,9 @@ Open `psql` or pgAdmin and create a database:
 CREATE DATABASE squares_db;
 ```
 
-### 3. Configure Local Secrets
+### 3. Configure Connection String
 
-Create or edit `appsettings.Development.json`:
+Edit `appsettings.json`:
 
 ```json
 {
@@ -140,6 +140,7 @@ Covered:
 - SquareService unit tests (xUnit)
 - Logic validation for multiple distinct squares
 - Edge cases (non-square inputs)
+- PointsController tests using in-memory EF Core
 
 ---
 
@@ -149,21 +150,15 @@ Planned: Dockerfile and docker-compose support for API and PostgreSQL
 
 ---
 
-## 🧠 Design Decisions
+## 🧠 Design & Scalability Considerations
 
 - Started with InMemory DB for fast prototyping
-- Switched to PostgreSQL for real-world persistence
-- Square detection uses diagonal vector math to avoid redundant calculations
-- Hash-based deduplication avoids identifying the same square twice
-- Code separated into controllers/services for testability
-
----
-
-## 📌 Notes
-
-- Max response time under 5 seconds even for 1000+ points
-- Built for scalability: EF Core, async API, layered design
-- Swagger auto-docs all REST endpoints
+- Switched to PostgreSQL for persistence
+- Square detection uses diagonal math + hashing to avoid duplicates
+- Layered architecture: separation of concerns via controllers/services
+- Tested against 1000+ points — performance remains under 5s per request
+- Scales horizontally: stateless controllers and async calls
+- SLI logging via `ILogger` tracks duration of square detection
 
 ---
 
