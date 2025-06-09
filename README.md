@@ -9,7 +9,7 @@ The **Squares API** allows users to manage a list of 2D points and identify all 
 - ✅ Add, import, delete 2D points
 - ✅ Identify all perfect squares from a list of points
 - ✅ RESTful API with Swagger documentation
-- ✅ PostgreSQL database with EF Core
+- ✅ PostgreSQL database with EF Core, doesn't allow duplicate points
 - ✅ Manual request timing log (SLI logging)
 - ✅ Unit tested with xUnit
 
@@ -28,7 +28,7 @@ The **Squares API** allows users to manage a list of 2D points and identify all 
 
 ## 📦 Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- [Visual studio community edition](https://visualstudio.microsoft.com/vs/community/)
 - [PostgreSQL 15+](https://www.postgresql.org/download/)
 - (Optional) [pgAdmin](https://www.pgadmin.org/) for database GUI
 
