@@ -28,8 +28,22 @@ namespace squares_api_adform.Controllers
         public async Task<ActionResult<Point>> AddPoint(Point point)
         {
             _context.Points.Add(point);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetPoints), new { id = point.Id }, point);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetPoints), new { id = point.Id }, point);
+            }
+            catch (DbUpdateException ex)
+            {
+                if (IsUniqueConstraintViolation(ex))
+                {
+                    return Conflict("A point with the same X and Y coordinates already exists.");
+                }
+
+                // Re-throw if not a duplicate error
+                throw;
+            }
         }
 
         // DELETE: api/points?x=1&y=2
@@ -62,10 +76,28 @@ namespace squares_api_adform.Controllers
             if (toInsert.Count > 0)
             {
                 _context.Points.AddRange(toInsert);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (IsUniqueConstraintViolation(ex))
+                    {
+                        return Conflict("One or more points already exist in the database.");
+                    }
+
+                    throw;
+                }
             }
 
             return Ok(new { Inserted = toInsert.Count });
+        }
+
+        // Helper methods
+        private bool IsUniqueConstraintViolation(DbUpdateException ex)
+        {
+            return ex.InnerException?.Message.Contains("duplicate key") == true;
         }
     }
 }
