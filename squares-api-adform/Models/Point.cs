@@ -23,7 +23,6 @@ namespace squares_api_adform.Models
         }
 
         public override bool Equals(object? obj) => Equals(obj as Point);
-
         public override int GetHashCode() => HashCode.Combine(X, Y);
     }
 }

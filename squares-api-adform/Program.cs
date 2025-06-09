@@ -14,7 +14,7 @@ namespace squares_api_adform
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add services to the container.
+            // Add controllers/services
             builder.Services.AddControllers();
             builder.Services.AddScoped<SquareService>();
 

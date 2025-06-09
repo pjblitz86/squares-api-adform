@@ -15,6 +15,7 @@ namespace squares_api_adform.Services
             {
                 for (int j = i + 1; j < points.Count; j++)
                 {
+                    // define candidate diagonal
                     var p1 = points[i];
                     var p2 = points[j];
 
